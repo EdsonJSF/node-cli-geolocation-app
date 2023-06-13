@@ -7,7 +7,7 @@ class Search {
 
   async city(place = "") {
     try {
-      const resp = await axios("https://reqres.in/api/users?page=2");
+      const resp = await axios(`https://api.mapbox.com/geocoding/v5/mapbox.places/${place}.json?limit=5&language=es&access_token=${mapboxToken}`);
       console.log(resp.data);
       return resp;
     } catch (error) {
