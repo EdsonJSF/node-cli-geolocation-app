@@ -9,7 +9,7 @@ class Search {
     return {
       limit: 5,
       language: "es",
-      access_token: mapboxToken,
+      access_token: process.env.MAPBOX_KEY,
     };
   }
 
