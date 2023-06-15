@@ -40,11 +40,11 @@ const readInput = async (message) => {
   return desc;
 };
 
-const createChoices = (tasks = [], checked = false) => {
-  return (choices = tasks.map((task, index) => {
+const createChoices = (places = [], checked = false) => {
+  return (choices = places.map((place, index) => {
     const i = `${index + 1}.`.green;
-    const choice = { value: task.id, name: `${i} ${task.desc}` };
-    if (checked) choice.checked = !!task.completeDate;
+    const choice = { value: place.id, name: `${i} ${place.name}` };
+    if (checked) choice.checked = !!place.completeDate;
     return choice;
   }));
 };
@@ -53,8 +53,8 @@ const createQuestion = (type, name, message, choices) => {
   return [{ type, name, message, choices }];
 };
 
-const listChoices = async (tasks = [], message) => {
-  const choices = createChoices(tasks);
+const listChoices = async (places = [], message = "Selecione") => {
+  const choices = createChoices(places);
   choices.unshift({ value: false, name: `${"0.".green} No! Quiero salir` });
   const question = createQuestion("list", "id", message, choices);
 
