@@ -25,13 +25,24 @@ const main = async () => {
 
         // Select place
         const id = await listChoices(places);
+        if (!id) break;
         let placeSelected = places.find((place) => place.id === id);
+
+        // Weather
+        const weather = await search.weather(
+          placeSelected.lat,
+          placeSelected.lng
+        );
 
         // Show results
         console.log("\nInformación de la ciudad\n".green);
-        console.log("Ciudad", placeSelected.name);
-        console.log("Lat", placeSelected.lat);
-        console.log("Lng", placeSelected.lng);
+        console.log("Ciudad:", placeSelected.name);
+        console.log("Lat:", placeSelected.lat);
+        console.log("Lng:", placeSelected.lng);
+        console.log("Temperatura:", weather.temp);
+        console.log("Temp mínima:", weather.tmin);
+        console.log("Temp máxima:", weather.tmax);
+        console.log("Cómo está el clima:", weather.desc);
         break;
     }
 
