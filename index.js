@@ -26,7 +26,11 @@ const main = async () => {
         // Select place
         const id = await listChoices(places);
         if (!id) break;
+
         let placeSelected = places.find((place) => place.id === id);
+
+        // Save search
+        search.addToHistory(placeSelected.name);
 
         // Weather
         const weather = await search.weatherByLatLng(
@@ -43,6 +47,12 @@ const main = async () => {
         console.log("Temp mínima:", weather.tmin);
         console.log("Temp máxima:", weather.tmax);
         console.log("Cómo está el clima:", weather.desc);
+        break;
+
+      case 2:
+        const historySelected = await listChoices(search.history);
+        console.log(historySelected);
+
         break;
     }
 

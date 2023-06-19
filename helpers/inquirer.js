@@ -43,7 +43,7 @@ const readInput = async (message) => {
 const createChoices = (places = [], checked = false) => {
   return (choices = places.map((place, index) => {
     const i = `${index + 1}.`.green;
-    const choice = { value: place.id, name: `${i} ${place.name}` };
+    const choice = { value: place.id ?? place, name: `${i} ${place.name ?? place}` };
     if (checked) choice.checked = !!place.completeDate;
     return choice;
   }));

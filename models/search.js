@@ -1,8 +1,13 @@
+const fs = require("fs");
+
 const axios = require("axios");
 
 class Search {
+  history = [];
+  dbPath = "./db/db.json";
+
   constructor() {
-    this.history = ["Madrid", "San José"];
+    this.readDB();
   }
 
   get paramsMapbox() {
@@ -60,6 +65,31 @@ class Search {
     } catch (error) {
       return [];
     }
+  }
+
+  addToHistory(place = "") {
+    if (
+      this.history.some(
+        (name) => name.toLocaleLowerCase() === place.toLocaleLowerCase()
+      )
+    ) {
+      return;
+    }
+
+    this.history.unshift(place);
+
+    this.saveDB();
+  }
+
+  saveDB() {
+    const payload = { history: this.history };
+    fs.writeFileSync(this.dbPath, JSON.stringify(payload));
+  }
+
+  readDB() {
+    const history = fs.readFileSync(this.dbPath);
+    const historyJson = JSON.parse(history);
+    this.history = historyJson.history;
   }
 }
 
