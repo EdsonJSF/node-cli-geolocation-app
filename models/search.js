@@ -40,20 +40,22 @@ class Search {
       return [];
     }
   }
-  async weather(lat, lon) {
+
+  async weatherByLatLng(lat, lon) {
     try {
       const instance = axios.create({
-        baseURL: `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}`,
-        params: this.paramsOpenWeather,
+        baseURL: `https://api.openweathermap.org/data/2.5/weather`,
+        params: { ...this.paramsOpenWeather, lat, lon },
       });
 
-      const { data } = await instance.get();
+      const resp = await instance.get();
+      const { main, weather } = resp.data;
 
       return {
-        desc: data.weather[0].description,
-        tmin: data.main.temp_min,
-        tmax: data.main.temp_max,
-        temp: data.main.temp,
+        desc: weather[0].description,
+        tmin: main.temp_min,
+        tmax: main.temp_max,
+        temp: main.temp,
       };
     } catch (error) {
       return [];

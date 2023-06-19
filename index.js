@@ -29,7 +29,7 @@ const main = async () => {
         let placeSelected = places.find((place) => place.id === id);
 
         // Weather
-        const weather = await search.weather(
+        const weather = await search.weatherByLatLng(
           placeSelected.lat,
           placeSelected.lng
         );
