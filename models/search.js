@@ -67,6 +67,17 @@ class Search {
     }
   }
 
+  showResults(place, weather) {
+    console.log("\nInformación de la ciudad\n".green);
+    console.log("Ciudad:", place.name);
+    console.log("Lat:", place.lat);
+    console.log("Lng:", place.lng);
+    console.log("Temperatura:", weather.temp);
+    console.log("Temp mínima:", weather.tmin);
+    console.log("Temp máxima:", weather.tmax);
+    console.log("Cómo está el clima:", weather.desc);
+  }
+
   addToHistory(place = "") {
     if (
       this.history.some(
@@ -78,6 +89,8 @@ class Search {
 
     this.history.unshift(place);
 
+    this.history = this.history.slice(0, 5);
+
     this.saveDB();
   }
 
@@ -87,7 +100,9 @@ class Search {
   }
 
   readDB() {
-    const history = fs.readFileSync(this.dbPath);
+    if (!fs.existsSync(this.dbPath)) return;
+
+    const history = fs.readFileSync(this.dbPath, { encoding: "utf-8" });
     const historyJson = JSON.parse(history);
     this.history = historyJson.history;
   }

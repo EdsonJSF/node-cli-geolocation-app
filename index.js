@@ -24,7 +24,7 @@ const main = async () => {
         const places = await search.city(input);
 
         // Select place
-        const id = await listChoices(places);
+        const id = await listChoices(places, "Seleccione lugar");
         if (!id) break;
 
         let placeSelected = places.find((place) => place.id === id);
@@ -39,19 +39,39 @@ const main = async () => {
         );
 
         // Show results
-        console.log("\nInformación de la ciudad\n".green);
-        console.log("Ciudad:", placeSelected.name);
-        console.log("Lat:", placeSelected.lat);
-        console.log("Lng:", placeSelected.lng);
-        console.log("Temperatura:", weather.temp);
-        console.log("Temp mínima:", weather.tmin);
-        console.log("Temp máxima:", weather.tmax);
-        console.log("Cómo está el clima:", weather.desc);
+        search.showResults(placeSelected, weather);
+
         break;
 
       case 2:
-        const historySelected = await listChoices(search.history);
-        console.log(historySelected);
+        // Show history
+        const history = await listChoices(
+          search.history,
+          "Seleccione historial"
+        );
+        if (!history) break;
+
+        // Search history
+        const historyPlaces = await search.city(history);
+
+        const historyId = await listChoices(historyPlaces, "Seleccione lugar");
+        if (!historyId) break;
+
+        let historySelected = historyPlaces.find(
+          (place) => place.id === historyId
+        );
+
+        // Save search
+        search.addToHistory(historySelected.name);
+
+        // Weather
+        const historyWeather = await search.weatherByLatLng(
+          historySelected.lat,
+          historySelected.lng
+        );
+
+        // Show results
+        search.showResults(historySelected, historyWeather);
 
         break;
     }
